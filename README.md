@@ -1,0 +1,1 @@
+# ckeditor_node_linker

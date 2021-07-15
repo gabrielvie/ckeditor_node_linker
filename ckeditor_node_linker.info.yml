@@ -1,0 +1,13 @@
+name: CKEditor Node Linker
+type: module
+description: Allows to insert node links in CKEditor.
+core_version_requirement: ^8 || ^9
+package: CKEditor
+dependencies:
+  - drupal:ckeditor
+  - drupal:editor
+
+# Information added by Drupal.org packaging script on 2020-07-09
+version: '8.x-1.0'
+project: 'ckeditor_node_linker'
+datestamp: 1626310670
