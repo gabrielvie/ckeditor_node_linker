@@ -1,0 +1,7 @@
+ckeditor_node_linker.dialog:
+  path: '/ckeditor/node-link/dialog/{filter_format}'
+  defaults:
+    _form: '\Drupal\ckeditor_node_linker\Form\CKEditorNodeLinkerDialogForm'
+    _title: 'Add Node Linker'
+  requirements:
+    _entity_access: 'filter_format.use'
