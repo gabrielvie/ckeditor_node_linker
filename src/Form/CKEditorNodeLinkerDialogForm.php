@@ -6,12 +6,14 @@ use Drupal\Core\Ajax\AjaxResponse;
 use Drupal\Core\Ajax\CloseModalDialogCommand;
 use Drupal\Core\Ajax\HtmlCommand;
 use Drupal\Core\Ajax\ReplaceCommand;
+use Drupal\Core\Entity\EntityTypeManagerInterface;
 use Drupal\Core\Form\BaseFormIdInterface;
 use Drupal\Core\Form\FormBase;
 use Drupal\Core\Form\FormStateInterface;
 use Drupal\editor\Ajax\EditorDialogSave;
 use Drupal\filter\Entity\FilterFormat;
 use Drupal\node\Entity\NodeType;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 /**
  * CKEditor dialog form.
@@ -19,6 +21,32 @@ use Drupal\node\Entity\NodeType;
  * @package ckeditor_node_linker
  */
 class CKEditorNodeLinkerDialogForm extends FormBase implements BaseFormIdInterface {
+
+  /**
+   * Entity type manager service.
+   *
+   * @var \Drupal\Core\Entity\EntityTypeManagerInterface
+   */
+  protected $entityTypeManager;
+
+  /**
+   * CKEditorNodeLinkerDialogForm constructor.
+   *
+   * @param \Drupal\Core\Entity\EntityTypeManagerInterface $entity_type_manager
+   *   Entity type manager.
+   */
+  public function __construct(EntityTypeManagerInterface $entity_type_manager) {
+    $this->entityTypeManager = $entity_type_manager;
+  }
+
+  /**
+   * {@inheritdoc}
+   */
+  public static function create(ContainerInterface $container) {
+    return new static(
+      $container->get('entity_type.manager')
+    );
+  }
 
   /**
    * {@inheritdoc}
@@ -44,7 +72,7 @@ class CKEditorNodeLinkerDialogForm extends FormBase implements BaseFormIdInterfa
     $form['#suffix'] = '</div>';
 
     /** @var \Drupal\node\NodeTypeInterface[] $node_types */
-    $node_types = \Drupal::entityTypeManager()
+    $node_types = $this->entityTypeManager
       ->getStorage('node_type')
       ->loadMultiple();
 
@@ -143,7 +171,7 @@ class CKEditorNodeLinkerDialogForm extends FormBase implements BaseFormIdInterfa
     }
     else {
       /** @var \Drupal\node\NodeInterface $node */
-      $node = \Drupal::entityTypeManager()
+      $node = $this->entityTypeManager
         ->getStorage('node')
         ->load($form_state->getValue('node'));
 
